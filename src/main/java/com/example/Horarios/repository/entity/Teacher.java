@@ -1,20 +1,24 @@
 package com.example.Horarios.repository.entity;
 
 import com.example.Horarios.dto.TeacherDTO;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Teacher {
     @Id
     private Integer id;
+    @Column(nullable = false)
     private String name;
-
+    @Column(nullable = false)
     private String lastname;
 
     private Integer age;
 
-
+    @OneToOne
+    private Course course;
 
 
     public Integer getId() {
