@@ -1,6 +1,7 @@
 package com.example.Horarios.repository.entity;
 
 import com.example.Horarios.dto.StudentDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -20,8 +21,9 @@ public class Student {
     private String lastname;
     private LocalDate birthday;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "course_id")
+    @JsonBackReference
     private Course course;
 
     public Student() {

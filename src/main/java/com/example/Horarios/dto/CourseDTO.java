@@ -1,5 +1,6 @@
 package com.example.Horarios.dto;
 
+import com.example.Horarios.repository.entity.Course;
 import com.example.Horarios.repository.entity.Student;
 import com.example.Horarios.repository.entity.Teacher;
 
@@ -22,6 +23,14 @@ public class CourseDTO {
         this.teacher = teacher;
         this.schedule = schedule;
         this.topic = topic;
+    }
+
+    public CourseDTO(Course course){
+        this.id = course.getId();
+        this.studentList = course.getStudentList();
+        this.teacher = course.getTeacher();
+        this.schedule = course.getSchedule();
+        this.topic = course.getTopic();
     }
 
     public Integer getId() {

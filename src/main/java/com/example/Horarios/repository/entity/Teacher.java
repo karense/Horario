@@ -1,12 +1,19 @@
 package com.example.Horarios.repository.entity;
 
 import com.example.Horarios.dto.TeacherDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Teacher {
     @Id
     private Integer id;
@@ -17,9 +24,19 @@ public class Teacher {
 
     private Integer age;
 
-    @OneToOne
-    private Course course;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "teacher")
 
+    private List<Course> course;
+
+
+    public List<Course> getCourse() {
+        return course;
+    }
+
+    public void setCourse(List<Course> course) {
+        this.course = course;
+    }
 
     public Integer getId() {
         return id;

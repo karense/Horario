@@ -1,11 +1,13 @@
 package com.example.Horarios.service.Imple;
 
+import com.example.Horarios.dto.CourseDTO;
 import com.example.Horarios.dto.TeacherDTO;
 import com.example.Horarios.repository.ITeacherRepository;
 import com.example.Horarios.repository.entity.Teacher;
 import com.example.Horarios.service.ITeacherService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +24,7 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public List<TeacherDTO> getAll() {
-        List<Teacher> list = (List<Teacher>) repository.findAll();
+         List<Teacher> list = (List<Teacher>) repository.findAll();
         return list.stream()
                 .map(TeacherDTO::new)
                 .collect(Collectors.toList());
@@ -32,10 +34,16 @@ public class TeacherServiceImpl implements ITeacherService {
     public TeacherDTO getById(Integer id) throws Exception {
         Optional<Teacher> value = repository.findById(id);
         if(value.isPresent()){
-            return new TeacherDTO(value.get());
+
+            TeacherDTO teacherDTO =new TeacherDTO(value.get());
+            List<CourseDTO> course =  new ArrayList<>();
+           // course.add(new )
+            //teacherDTO.setCourse();
+            return teacherDTO;
         }else{
             throw new Exception("No se econtró un profesor con esa cédula");
         }
+
     }
 
     @Override
@@ -48,7 +56,6 @@ public class TeacherServiceImpl implements ITeacherService {
          Optional<Teacher> value = repository.findById(teacherDTO.getId());
 
         if(value.isPresent()){
-            repository.save(new Teacher(teacherDTO));
             return "Update";
         }else{
             return "NO exist";

@@ -1,20 +1,29 @@
 package com.example.Horarios.repository.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import com.example.Horarios.dto.CourseDTO;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
+@Table(name = "course")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Course {
     @Id
     private Integer id;
 
-    @OneToMany
+
+    @OneToMany(mappedBy = "course")
+    @JsonManagedReference
     private List<Student> studentList;
-    @OneToOne
+    @ManyToOne()
+    @JoinColumn(name = "teacher_id")
+    @JsonBackReference
     private Teacher teacher;
     private String schedule;
     private String topic;
@@ -28,6 +37,14 @@ public class Course {
         this.teacher = teacher;
         this.schedule = schedule;
         this.topic = topic;
+    }
+
+    public Course(CourseDTO courseDTO) {
+        this.id = courseDTO.getId();
+        this.studentList = courseDTO.getStudentList();
+        this.teacher = courseDTO.getTeacher();
+        this.schedule = courseDTO.getSchedule();
+        this.topic = courseDTO.getTopic();
     }
 
     public Integer getId() {

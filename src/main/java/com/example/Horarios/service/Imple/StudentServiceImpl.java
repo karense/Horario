@@ -8,6 +8,7 @@ import com.example.Horarios.repository.entity.Teacher;
 import com.example.Horarios.service.IStudentService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class StudentServiceImpl implements IStudentService {
@@ -28,7 +29,12 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public StudentDTO getById(Integer id) throws Exception {
-        return null;
+        Optional<Student> value = repository.findById(id);
+        if(value.isPresent()){
+            return new StudentDTO(value.get());
+        }else{
+            throw new Exception("No se econtró un estudiante con este id");
+        }
     }
 
     @Override
