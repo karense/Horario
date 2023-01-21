@@ -2,18 +2,25 @@ package com.example.Horarios.controller;
 
 import com.example.Horarios.dto.CourseDTO;
 import com.example.Horarios.service.ICourseService;
+import com.example.Horarios.utils.ErrorResponse.InvalidDataException;
+import com.example.Horarios.utils.mapper.CourseMapper;
+import com.example.Horarios.utils.mapper.TeacherMapper;
+import com.example.Horarios.utils.validation.CourseValidation;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/course")
 public class CourseController {
     private final ICourseService iCourseService;
+    private final CourseMapper courseMapper;
 
-    public CourseController(ICourseService iCourseService) {
+    public CourseController(ICourseService iCourseService, CourseMapper courseMapper) {
         this.iCourseService = iCourseService;
+        this.courseMapper = courseMapper;
     }
 
     @GetMapping(value = {"","/{id}"})
@@ -26,13 +33,21 @@ public class CourseController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody CourseDTO courseDTO){
-        iCourseService.save(courseDTO);
+    public ResponseEntity<?> create(@Valid @RequestBody CourseValidation courseValidation, BindingResult result){
+        if(result.hasErrors()){
+            throw new InvalidDataException(result);
+        }
+        CourseDTO convertToCourseDTO = courseMapper.validationToDto(courseValidation);
+        iCourseService.save(convertToCourseDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping()
-    public ResponseEntity<?> update(@RequestBody CourseDTO courseDTO){
-        return new ResponseEntity<>(iCourseService.update(courseDTO),HttpStatus.OK);
+    public ResponseEntity<?> update(@Valid @RequestBody CourseValidation courseValidation, BindingResult result){
+        if(result.hasErrors()){
+            throw new InvalidDataException(result);
+        }
+        CourseDTO convertToCourseDTO = courseMapper.validationToDto(courseValidation);
+        return new ResponseEntity<>(iCourseService.update(convertToCourseDTO),HttpStatus.OK);
     }
 }

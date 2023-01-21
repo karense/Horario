@@ -30,14 +30,6 @@ public class TeacherDTO {
     }
 
 
-    public TeacherDTO(Teacher teacher) {
-        this.id = teacher.getId();
-        this.name = teacher.getName();
-        this.lastname = teacher.getLastname();
-        this.age = teacher.getAge();
-        this.course=teacher.getCourse().stream().map(CourseDTO::new).collect(Collectors.toList());
-    }
-
     public List<CourseDTO> getCourse() {
         return course;
     }

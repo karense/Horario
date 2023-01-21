@@ -38,7 +38,7 @@ public class TeacherServiceImpl implements ITeacherService {
         Optional<Teacher> value = repository.findById(id);
         if(value.isPresent()){
 
-            TeacherDTO teacherDTO =new TeacherDTO(value.get());
+            TeacherDTO teacherDTO = teacherMapper.toTeacherDTO(value.get());
             List<CourseDTO> course =  new ArrayList<>();
 
             return teacherDTO;

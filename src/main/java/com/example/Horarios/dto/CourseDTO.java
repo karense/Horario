@@ -9,6 +9,7 @@ import java.util.List;
 public class CourseDTO {
     private Integer id;
 
+    private Integer idTeacher;
     private List<Student> studentList;
     private Teacher teacher;
     private String schedule;
@@ -17,20 +18,21 @@ public class CourseDTO {
     public CourseDTO() {
     }
 
-    public CourseDTO(Integer id, List<Student> studentList, Teacher teacher, String schedule, String topic) {
+    public CourseDTO(Integer id, Integer idTeacher, List<Student> studentList, Teacher teacher, String schedule, String topic) {
         this.id = id;
+        this.idTeacher = idTeacher;
         this.studentList = studentList;
         this.teacher = teacher;
         this.schedule = schedule;
         this.topic = topic;
     }
 
-    public CourseDTO(Course course){
-        this.id = course.getId();
-        this.studentList = course.getStudentList();
-        this.teacher = course.getTeacher();
-        this.schedule = course.getSchedule();
-        this.topic = course.getTopic();
+    public Integer getIdTeacher() {
+        return idTeacher;
+    }
+
+    public void setIdTeacher(Integer idTeacher) {
+        this.idTeacher = idTeacher;
     }
 
     public Integer getId() {

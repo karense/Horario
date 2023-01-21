@@ -21,8 +21,11 @@ public class Course {
     @OneToMany(mappedBy = "course")
     @JsonManagedReference
     private List<Student> studentList;
+
+    @Column(name = "teacher_id")
+    private Integer idTeacher;
     @ManyToOne()
-    @JoinColumn(name = "teacher_id")
+    @JoinColumn(name = "teacher_id", insertable = false, updatable = false)
     @JsonBackReference
     private Teacher teacher;
     private String schedule;
@@ -31,20 +34,15 @@ public class Course {
     public Course() {
     }
 
-    public Course(Integer id, List<Student> studentList, Teacher teacher, String schedule, String topic) {
+
+
+    public Course(Integer id, List<Student> studentList, Integer idTeacher, Teacher teacher, String schedule, String topic) {
         this.id = id;
         this.studentList = studentList;
+        this.idTeacher = idTeacher;
         this.teacher = teacher;
         this.schedule = schedule;
         this.topic = topic;
-    }
-
-    public Course(CourseDTO courseDTO) {
-        this.id = courseDTO.getId();
-        this.studentList = courseDTO.getStudentList();
-        this.teacher = courseDTO.getTeacher();
-        this.schedule = courseDTO.getSchedule();
-        this.topic = courseDTO.getTopic();
     }
 
     public Integer getId() {
@@ -61,6 +59,14 @@ public class Course {
 
     public void setStudentList(List<Student> studentList) {
         this.studentList = studentList;
+    }
+
+    public Integer getIdTeacher() {
+        return idTeacher;
+    }
+
+    public void setIdTeacher(Integer idTeacher) {
+        this.idTeacher = idTeacher;
     }
 
     public Teacher getTeacher() {
