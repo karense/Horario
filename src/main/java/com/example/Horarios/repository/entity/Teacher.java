@@ -24,9 +24,9 @@ public class Teacher {
 
     private Integer age;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "teacher")
 
+    @OneToMany(mappedBy = "teacher")
+    @JsonManagedReference
     private List<Course> course;
 
 

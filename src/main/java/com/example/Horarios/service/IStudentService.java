@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface IStudentService {
     List<StudentDTO> getAll();
-    StudentDTO getById(Integer id) throws Exception;
+    StudentDTO getById(int id) throws Exception;
 
     void save(StudentDTO studentDTO);
     String update(StudentDTO studentDTO);
+
+    void delete(int id);
 }

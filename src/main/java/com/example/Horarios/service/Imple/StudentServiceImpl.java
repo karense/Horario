@@ -6,11 +6,13 @@ import com.example.Horarios.repository.IStudentRepository;
 import com.example.Horarios.repository.entity.Student;
 import com.example.Horarios.repository.entity.Teacher;
 import com.example.Horarios.service.IStudentService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class StudentServiceImpl implements IStudentService {
 
     private final IStudentRepository repository;
@@ -28,7 +30,7 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public StudentDTO getById(Integer id) throws Exception {
+    public StudentDTO getById(int id) throws Exception {
         Optional<Student> value = repository.findById(id);
         if(value.isPresent()){
             return new StudentDTO(value.get());
@@ -39,11 +41,25 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public void save(StudentDTO studentDTO) {
-
+        repository.save(new Student(studentDTO));
     }
 
     @Override
     public String update(StudentDTO studentDTO) {
-        return null;
+        Optional<Student> value = repository.findById(studentDTO.getId());
+        if (value.isPresent()){
+            repository.save(new Student(studentDTO));
+            return "Updated";
+        }else{
+            return "No se econtró un estudiante con este id";
+        }
+    }
+
+    @Override
+    public void delete(int id) {
+        Optional<Student> value = repository.findById( id);
+        if (value.isPresent()){
+            repository.deleteById(id);
+        }
     }
 }

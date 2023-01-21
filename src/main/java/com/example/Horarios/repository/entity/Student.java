@@ -78,7 +78,7 @@ public class Student {
     }
 
     public int getAge() {
-        return (int) ChronoUnit.YEARS.between(LocalDate.now(),this.birthday);
+        return (int) Math.abs( ChronoUnit.YEARS.between(LocalDate.now(),this.birthday));
     }
 
     public Course getCourse() {
