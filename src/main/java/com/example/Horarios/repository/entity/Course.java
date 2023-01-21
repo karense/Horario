@@ -15,8 +15,8 @@ import java.util.List;
         property = "id")
 public class Course {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
 
     @OneToMany(mappedBy = "course")
     @JsonManagedReference

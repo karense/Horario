@@ -10,6 +10,6 @@ public interface ITeacherService {
     List<TeacherDTO> getAll();
     TeacherDTO getById(Integer id) throws Exception;
 
-    void save(TeacherDTO teacherDTO);
+    TeacherDTO save(TeacherDTO teacherDTO);
     String update(TeacherDTO teacherDTO);
 }

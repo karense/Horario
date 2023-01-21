@@ -5,6 +5,7 @@ import com.example.Horarios.dto.TeacherDTO;
 import com.example.Horarios.repository.ITeacherRepository;
 import com.example.Horarios.repository.entity.Teacher;
 import com.example.Horarios.service.ITeacherService;
+import com.example.Horarios.utils.mapper.TeacherMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,9 +17,11 @@ import java.util.stream.Collectors;
 public class TeacherServiceImpl implements ITeacherService {
 
     private final ITeacherRepository repository;
+    private final TeacherMapper teacherMapper;
 
-    public TeacherServiceImpl(ITeacherRepository repository) {
+    public TeacherServiceImpl(ITeacherRepository repository, TeacherMapper teacherMapper) {
         this.repository = repository;
+        this.teacherMapper = teacherMapper;
     }
 
 
@@ -26,7 +29,7 @@ public class TeacherServiceImpl implements ITeacherService {
     public List<TeacherDTO> getAll() {
          List<Teacher> list = (List<Teacher>) repository.findAll();
         return list.stream()
-                .map(TeacherDTO::new)
+                .map(teacherMapper::toTeacherDTO)
                 .collect(Collectors.toList());
     }
 
@@ -37,8 +40,7 @@ public class TeacherServiceImpl implements ITeacherService {
 
             TeacherDTO teacherDTO =new TeacherDTO(value.get());
             List<CourseDTO> course =  new ArrayList<>();
-           // course.add(new )
-            //teacherDTO.setCourse();
+
             return teacherDTO;
         }else{
             throw new Exception("No se econtró un profesor con esa cédula");
@@ -47,15 +49,16 @@ public class TeacherServiceImpl implements ITeacherService {
     }
 
     @Override
-    public void save(TeacherDTO teacherDTO) {
-        repository.save(new Teacher(teacherDTO));
+    public TeacherDTO save(TeacherDTO teacherDTO) {
+        repository.save(teacherMapper.toTeacher(teacherDTO));
+        return teacherDTO;
     }
 
     @Override
     public String update(TeacherDTO teacherDTO) {
          Optional<Teacher> value = repository.findById(teacherDTO.getId());
-
         if(value.isPresent()){
+            repository.save(teacherMapper.toTeacher(teacherDTO));
             return "Update";
         }else{
             return "NO exist";

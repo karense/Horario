@@ -1,11 +1,14 @@
 package com.example.Horarios.controller;
 
 import com.example.Horarios.dto.TeacherDTO;
-import com.example.Horarios.service.ITeacherService;
 import com.example.Horarios.service.Imple.TeacherServiceImpl;
-import jakarta.websocket.server.PathParam;
+import com.example.Horarios.utils.ErrorResponse.InvalidDataException;
+import com.example.Horarios.utils.mapper.TeacherMapper;
+import com.example.Horarios.utils.validation.TeacherValidation;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class TeacherController {
 
     private final TeacherServiceImpl teacherServiceImpl;
+    private  final TeacherMapper teacherMapper;
 
-    public TeacherController(TeacherServiceImpl iTeacherService){
+    public TeacherController(TeacherServiceImpl iTeacherService, TeacherMapper teacherMapper){
         this.teacherServiceImpl = iTeacherService;
+        this.teacherMapper = teacherMapper;
     }
 
     @GetMapping(value = {"", "/{id}"})
@@ -30,14 +35,25 @@ public class TeacherController {
 
     @PostMapping()
     public ResponseEntity<?>
-    save(@RequestBody TeacherDTO teacher){
-        teacherServiceImpl.save(teacher);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    save(@Valid @RequestBody TeacherValidation teacher,  BindingResult result){
+        if (result.hasErrors()){
+            throw new InvalidDataException(result);
+        }
+        TeacherDTO teacherValidationToTeacherDTO = teacherMapper.TeacherValidationToTeacherDTO(teacher);
+        TeacherDTO teacherSaved = teacherServiceImpl.save(teacherValidationToTeacherDTO);
+
+        return new ResponseEntity<>(teacherSaved,HttpStatus.CREATED);
     }
 
     @PutMapping()
     public ResponseEntity<?>
-    update(@RequestBody TeacherDTO teacher){
-        return new ResponseEntity<>(teacherServiceImpl.update(teacher), HttpStatus.OK);
+    update(@Valid @RequestBody TeacherValidation teacher, BindingResult result){
+        if(result.hasErrors()){
+            throw  new InvalidDataException(result);
+        }
+
+        TeacherDTO teacherValidationToTeacherDTO = teacherMapper.TeacherValidationToTeacherDTO(teacher);
+
+        return new ResponseEntity<>(teacherServiceImpl.update(teacherValidationToTeacherDTO), HttpStatus.OK);
     }
 }
