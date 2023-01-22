@@ -1,10 +1,7 @@
 package com.example.Horarios.repository.entity;
 
 import com.example.Horarios.dto.CourseDTO;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,13 +17,16 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     @JsonManagedReference
+    @JsonIgnore
     private List<Student> studentList;
 
     @Column(name = "teacher_id")
+    @JsonIgnore
     private Integer idTeacher;
     @ManyToOne()
     @JoinColumn(name = "teacher_id", insertable = false, updatable = false)
     @JsonBackReference
+    @JsonIgnore
     private Teacher teacher;
     private String schedule;
     private String topic;

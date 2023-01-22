@@ -51,6 +51,7 @@ public class RestExceptionHandle extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handleException(Exception exc) {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        System.out.println(exc.getMessage());
         return buildResponseEntity(httpStatus, new RuntimeException("Se ha presentado un problema."));
     }
 

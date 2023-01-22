@@ -4,6 +4,7 @@ import com.example.Horarios.dto.CourseDTO;
 import com.example.Horarios.dto.StudentDTO;
 import com.example.Horarios.dto.TeacherDTO;
 import com.example.Horarios.service.Imple.StudentServiceImpl;
+import com.example.Horarios.utils.ErrorResponse.InvalidDataException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,13 @@ public class StudentController {
     @PostMapping()
     public ResponseEntity<?>
     save(@RequestBody StudentDTO studentDTO){
-        studentService.save(studentDTO);
+        try{
+            studentService.save(studentDTO);
+
+        }catch (Exception e){
+            System.out.println(e.getCause());
+            //throw new InvalidDataException(e.getMessage());
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

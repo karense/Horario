@@ -1,14 +1,14 @@
 package com.example.Horarios.service.Imple;
 
 import com.example.Horarios.dto.StudentDTO;
-import com.example.Horarios.dto.TeacherDTO;
 import com.example.Horarios.repository.IStudentRepository;
 import com.example.Horarios.repository.entity.Student;
-import com.example.Horarios.repository.entity.Teacher;
 import com.example.Horarios.service.IStudentService;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements IStudentService {
 
     private final IStudentRepository repository;
+
 
     public StudentServiceImpl(IStudentRepository repository) {
         this.repository = repository;
@@ -32,34 +33,31 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public StudentDTO getById(int id) throws Exception {
         Optional<Student> value = repository.findById(id);
-        if(value.isPresent()){
-            return new StudentDTO(value.get());
-        }else{
-            throw new Exception("No se econtró un estudiante con este id");
-        }
+        if(value.isEmpty()) throw new NoSuchElementException("No se econtró un estudiante con este id.");
+
+        return new StudentDTO(value.get());
     }
 
     @Override
     public void save(StudentDTO studentDTO) {
+        Optional<Student> value = repository.findById(studentDTO.getId());
+        if (value.isPresent()) throw new DuplicateKeyException("Ya existe un estudiante con esta cédula.");
+
         repository.save(new Student(studentDTO));
     }
 
     @Override
     public String update(StudentDTO studentDTO) {
         Optional<Student> value = repository.findById(studentDTO.getId());
-        if (value.isPresent()){
-            repository.save(new Student(studentDTO));
-            return "Updated";
-        }else{
-            return "No se econtró un estudiante con este id";
-        }
+        if (value.isEmpty()) throw new NoSuchElementException("No se econtró un estudiante con este id.");
+        repository.save(new Student(studentDTO));
+        return "Updated";
     }
 
     @Override
     public void delete(int id) {
         Optional<Student> value = repository.findById( id);
-        if (value.isPresent()){
+        if (value.isEmpty()) throw new NoSuchElementException("No se econtró un estudiante con este id.");
             repository.deleteById(id);
-        }
     }
 }

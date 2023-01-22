@@ -8,6 +8,7 @@ import com.example.Horarios.utils.mapper.CourseMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,11 +34,10 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public CourseDTO getById(int id) throws Exception {
         Optional<Course> value = repository.findById(id);
-        if(value.isPresent()){
-            return courseMapper.toCourseDTO(value.get());
-        }else{
-            throw new Exception("No se econtró un curso con este id");
+        if(value.isEmpty()){
+            throw new NoSuchElementException("No se econtró un curso con este id.");
         }
+        return courseMapper.toCourseDTO(value.get());
     }
 
     @Override
@@ -48,11 +48,10 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public String update(CourseDTO courseDTO) {
         Optional<Course> value = repository.findById(courseDTO.getId());
-        if(value.isPresent()){
-            repository.save(courseMapper.toCourse(courseDTO));
-            return "Update";
-        }else{
-            return "NO exist";
+        if(value.isEmpty()){
+           throw new NoSuchElementException("No se econtró un curso con este id.");
         }
+        repository.save(courseMapper.toCourse(courseDTO));
+        return "Update";
     }
 }

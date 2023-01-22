@@ -24,11 +24,11 @@ public class Teacher {
 
     private Integer age;
 
-
     @OneToMany(mappedBy = "teacher")
     @JsonManagedReference
+    @JsonIgnore
+    @Column(insertable = false, updatable = false)
     private List<Course> course;
-
 
     public List<Course> getCourse() {
         return course;

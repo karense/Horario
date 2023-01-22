@@ -12,6 +12,7 @@ public interface CourseMapper {
     CourseDTO toCourseDTO(Course course);
     Course toCourse(CourseDTO courseDTO);
     @Mappings({
+            @Mapping(target = "id", source = "id"),
             @Mapping(target="idTeacher", source="teacher_id"),
             @Mapping(target="schedule", source="schedule"),
             @Mapping(target="topic", source="topic"),

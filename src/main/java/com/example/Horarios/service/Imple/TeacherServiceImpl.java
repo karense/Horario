@@ -1,15 +1,15 @@
 package com.example.Horarios.service.Imple;
 
-import com.example.Horarios.dto.CourseDTO;
 import com.example.Horarios.dto.TeacherDTO;
 import com.example.Horarios.repository.ITeacherRepository;
 import com.example.Horarios.repository.entity.Teacher;
 import com.example.Horarios.service.ITeacherService;
 import com.example.Horarios.utils.mapper.TeacherMapper;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,22 +34,23 @@ public class TeacherServiceImpl implements ITeacherService {
     }
 
     @Override
-    public TeacherDTO getById(Integer id) throws Exception {
+    public TeacherDTO getById(Integer id) {
         Optional<Teacher> value = repository.findById(id);
-        if(value.isPresent()){
 
-            TeacherDTO teacherDTO = teacherMapper.toTeacherDTO(value.get());
-            List<CourseDTO> course =  new ArrayList<>();
-
-            return teacherDTO;
-        }else{
-            throw new Exception("No se econtró un profesor con esa cédula");
+        if(value.isEmpty()){
+            throw new NoSuchElementException("No se econtró un profesor con esta cédula.");
         }
+
+        return teacherMapper.toTeacherDTO(value.get());
 
     }
 
     @Override
-    public TeacherDTO save(TeacherDTO teacherDTO) {
+    public TeacherDTO save(TeacherDTO teacherDTO) throws DuplicateKeyException {
+        Optional<Teacher> value = repository.findById(teacherDTO.getId());
+        if (value.isPresent()){
+            throw new DuplicateKeyException("Ya existe un profesor con esta cédula.");
+        }
         repository.save(teacherMapper.toTeacher(teacherDTO));
         return teacherDTO;
     }
@@ -57,11 +58,10 @@ public class TeacherServiceImpl implements ITeacherService {
     @Override
     public String update(TeacherDTO teacherDTO) {
          Optional<Teacher> value = repository.findById(teacherDTO.getId());
-        if(value.isPresent()){
-            repository.save(teacherMapper.toTeacher(teacherDTO));
-            return "Update";
-        }else{
-            return "NO exist";
+        if(value.isEmpty()){
+            throw new NoSuchElementException("No se econtró un profesor con esta cédula");
         }
+        repository.save(teacherMapper.toTeacher(teacherDTO));
+        return "Update";
     }
 }
