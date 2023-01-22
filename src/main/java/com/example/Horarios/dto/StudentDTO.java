@@ -14,25 +14,19 @@ public class StudentDTO {
     private Integer age;
     private Course course;
 
+    private Integer courseId;
+
     public StudentDTO() {
     }
 
-    public StudentDTO(Integer id, String name, String lastname, LocalDate birthday, Integer age, Course course) {
+    public StudentDTO(Integer id, String name, String lastname, LocalDate birthday, Integer age, Course course, Integer courseId) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.birthday = birthday;
         this.age = age;
         this.course = course;
-    }
-
-    public StudentDTO(Student student){
-        this.id = student.getId();
-        this.name = student.getName();
-        this.lastname = student.getLastname();
-        this.birthday = student.getBirthday();
-        this.age = student.getAge();
-        this.course = student.getCourse();
+        this.courseId = courseId;
     }
 
     public Integer getId() {
@@ -81,5 +75,13 @@ public class StudentDTO {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 }

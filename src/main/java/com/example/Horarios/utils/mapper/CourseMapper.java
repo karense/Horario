@@ -13,7 +13,7 @@ public interface CourseMapper {
     Course toCourse(CourseDTO courseDTO);
     @Mappings({
             @Mapping(target = "id", source = "id"),
-            @Mapping(target="idTeacher", source="teacher_id"),
+            @Mapping(target="idTeacher", source="teacherId"),
             @Mapping(target="schedule", source="schedule"),
             @Mapping(target="topic", source="topic"),
     })

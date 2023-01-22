@@ -4,6 +4,7 @@ import com.example.Horarios.dto.StudentDTO;
 import com.example.Horarios.repository.IStudentRepository;
 import com.example.Horarios.repository.entity.Student;
 import com.example.Horarios.service.IStudentService;
+import com.example.Horarios.utils.mapper.StudentMapper;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -16,17 +17,19 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements IStudentService {
 
     private final IStudentRepository repository;
+    private final StudentMapper studentMapper;
 
 
-    public StudentServiceImpl(IStudentRepository repository) {
+    public StudentServiceImpl(IStudentRepository repository, StudentMapper studentMapper) {
         this.repository = repository;
+        this.studentMapper = studentMapper;
     }
 
     @Override
     public List<StudentDTO> getAll() {
         List<Student> list = (List<Student>) repository.findAll();
         return list.stream()
-                .map(StudentDTO::new)
+                .map(studentMapper::toStudentDTO)
                 .collect(Collectors.toList());
     }
 
@@ -35,7 +38,7 @@ public class StudentServiceImpl implements IStudentService {
         Optional<Student> value = repository.findById(id);
         if(value.isEmpty()) throw new NoSuchElementException("No se econtró un estudiante con este id.");
 
-        return new StudentDTO(value.get());
+        return studentMapper.toStudentDTO(value.get());
     }
 
     @Override
@@ -43,14 +46,14 @@ public class StudentServiceImpl implements IStudentService {
         Optional<Student> value = repository.findById(studentDTO.getId());
         if (value.isPresent()) throw new DuplicateKeyException("Ya existe un estudiante con esta cédula.");
 
-        repository.save(new Student(studentDTO));
+        repository.save(studentMapper.toStudent(studentDTO));
     }
 
     @Override
     public String update(StudentDTO studentDTO) {
         Optional<Student> value = repository.findById(studentDTO.getId());
         if (value.isEmpty()) throw new NoSuchElementException("No se econtró un estudiante con este id.");
-        repository.save(new Student(studentDTO));
+        repository.save(studentMapper.toStudent(studentDTO));
         return "Updated";
     }
 

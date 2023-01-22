@@ -1,17 +1,13 @@
 package com.example.Horarios.utils.validation;
 
-import com.example.Horarios.repository.entity.Student;
-import com.example.Horarios.repository.entity.Teacher;
 import jakarta.validation.constraints.*;
 
-import java.util.List;
 
 public class CourseValidation {
 
-
     private Integer id;
-    @NotNull(message = "El campo [teacher_id] no debe de ser nulo.")
-    private Integer teacher_id;
+    @NotNull(message = "El campo [teacherId] es requerido.")
+    private Integer teacherId;
     @NotBlank
     private String schedule;
     @NotBlank
@@ -22,9 +18,9 @@ public class CourseValidation {
     public CourseValidation() {
     }
 
-    public CourseValidation(Integer id, Integer teacher_id, String schedule, String topic) {
+    public CourseValidation(Integer id, Integer teacherId, String schedule, String topic) {
         this.id = id;
-        this.teacher_id = teacher_id;
+        this.teacherId = teacherId;
         this.schedule = schedule;
         this.topic = topic;
     }
@@ -37,12 +33,12 @@ public class CourseValidation {
         this.id = id;
     }
 
-    public Integer getTeacher_id() {
-        return teacher_id;
+    public Integer getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacher_id(Integer teacher_id) {
-        this.teacher_id = teacher_id;
+    public void setTeacherId(Integer teacherId) {
+        this.teacherId = teacherId;
     }
 
     public String getSchedule() {
