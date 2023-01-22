@@ -29,16 +29,29 @@ public class Student {
     @JsonIgnore
     private Integer courseId;
 
+    @OneToOne
+    @JoinColumn(name = "grade_id", insertable = false, updatable = false)
+    private Grade grade;
+
     public Student() {
     }
 
-    public Student(Integer id, String name, String lastname, LocalDate birthday, Course course, Integer courseId) {
+    public Student(Integer id, String name, String lastname, LocalDate birthday, Course course, Integer courseId, Grade grade) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.birthday = birthday;
         this.course = course;
         this.courseId = courseId;
+        this.grade = grade;
+    }
+
+    public Grade getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
     }
 
     public Integer getId() {

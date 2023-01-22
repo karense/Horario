@@ -16,10 +16,12 @@ public class StudentDTO {
 
     private Integer courseId;
 
+    private GradeDTO gradeDTO;
+
     public StudentDTO() {
     }
 
-    public StudentDTO(Integer id, String name, String lastname, LocalDate birthday, Integer age, Course course, Integer courseId) {
+    public StudentDTO(Integer id, String name, String lastname, LocalDate birthday, Integer age, Course course, Integer courseId, GradeDTO gradeDTO) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -27,6 +29,15 @@ public class StudentDTO {
         this.age = age;
         this.course = course;
         this.courseId = courseId;
+        this.gradeDTO = gradeDTO;
+    }
+
+    public GradeDTO getGradeDTO() {
+        return gradeDTO;
+    }
+
+    public void setGradeDTO(GradeDTO gradeDTO) {
+        this.gradeDTO = gradeDTO;
     }
 
     public Integer getId() {

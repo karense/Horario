@@ -26,7 +26,6 @@ public class Course {
     @ManyToOne()
     @JoinColumn(name = "teacher_id", insertable = false, updatable = false)
     @JsonBackReference
-    @JsonIgnore
     private Teacher teacher;
     private String schedule;
     private String topic;

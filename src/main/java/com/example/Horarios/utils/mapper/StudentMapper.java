@@ -18,7 +18,7 @@ public interface StudentMapper {
             @Mapping(target = "id", source = "id"),
             @Mapping(target="name", source="name"),
             @Mapping(target="lastname", source="lastname"),
-            @Mapping(target="birthday", source="birthday"),
+            @Mapping(target="birthday", source="birthday", dateFormat = "yyyy-MM-dd"),
             @Mapping(target="courseId", source="courseId"),
     })
     StudentDTO validationToStudentDTO(StudentValidation studentValidation);

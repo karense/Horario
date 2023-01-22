@@ -1,6 +1,5 @@
 package com.example.Horarios.controller;
 
-import com.example.Horarios.dto.StudentDTO;
 import com.example.Horarios.service.Imple.StudentServiceImpl;
 import com.example.Horarios.utils.ErrorResponse.InvalidDataException;
 import com.example.Horarios.utils.mapper.StudentMapper;
@@ -34,8 +33,9 @@ public class StudentController {
 
     @PostMapping()
     public ResponseEntity<?>save(@Valid @RequestBody StudentValidation studentValidation, BindingResult result){
+
         if(result.hasErrors()){
-            new InvalidDataException(result);
+            throw new InvalidDataException(result);
         }
         studentService.save(studentMapper.validationToStudentDTO(studentValidation));
         return new ResponseEntity<>(HttpStatus.CREATED);

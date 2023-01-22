@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -17,25 +16,25 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class RestExceptionHandle extends ResponseEntityExceptionHandler {
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(NoSuchElementException exc) {
+    protected ResponseEntity<ErrorResponseModel> handleException(NoSuchElementException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, exc);
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(DuplicateKeyException exc) {
+    protected ResponseEntity<ErrorResponseModel> handleException(DuplicateKeyException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, exc);
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(IllegalArgumentException exc) {
+    protected ResponseEntity<ErrorResponseModel> handleException(IllegalArgumentException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, exc);
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(InvalidDataException exc) {
+    protected ResponseEntity<ErrorResponseModel> handleException(InvalidDataException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         List<String> errors = exc.getResult().getFieldErrors().stream().map(FieldError::getDefaultMessage)
                 .collect(Collectors.toList());
@@ -43,24 +42,23 @@ public class RestExceptionHandle extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(MethodArgumentTypeMismatchException exc) {
+    protected ResponseEntity<ErrorResponseModel> handleException(MethodArgumentTypeMismatchException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, new RuntimeException("Los argumentos no son validos."));
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponse> handleException(Exception exc) {
+    protected ResponseEntity<ErrorResponseModel> handleException(Exception exc) {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        System.out.println(exc.getMessage());
         return buildResponseEntity(httpStatus, new RuntimeException("Se ha presentado un problema."));
     }
 
-    private ResponseEntity<ErrorResponse> buildResponseEntity(HttpStatus httpStatus, Exception exc) {
+    private ResponseEntity<ErrorResponseModel> buildResponseEntity(HttpStatus httpStatus, Exception exc) {
         return buildResponseEntity(httpStatus, exc, null);
     }
 
-    private ResponseEntity<ErrorResponse> buildResponseEntity(HttpStatus httpStatus, Exception exc, List<String> errors) {
-        ErrorResponse error = new ErrorResponse();
+    private ResponseEntity<ErrorResponseModel> buildResponseEntity(HttpStatus httpStatus, Exception exc, List<String> errors) {
+        ErrorResponseModel error = new ErrorResponseModel();
         error.setMessage(exc.getMessage());
         error.setStatus(httpStatus.value());
         error.setErrors(errors);

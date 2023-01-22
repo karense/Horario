@@ -17,7 +17,9 @@ public class StudentValidation {
     @Pattern(regexp = "[a-zA-z\s]+", message = "El campo: [lastname] solo debe contener letras.")
     @NotBlank(message = "El campo [lastname] es requerido.")
     private String lastname;
-    private LocalDate birthday;
+
+    @Pattern(regexp = "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$", message = "El formato de la fecha debe ser: YYYY-MM-DD.")
+    private String birthday;
     @Min(value = 1, message = "El campo: [age] debe ser mayor que o igual a 1.")
     private Integer age;
     @NotNull(message = "El campo [courseId] no debe ser nulo.")
@@ -26,7 +28,7 @@ public class StudentValidation {
     public StudentValidation() {
     }
 
-    public StudentValidation(Integer id, String name, String lastname, LocalDate birthday, Integer age, Integer courseId) {
+    public StudentValidation(Integer id, String name, String lastname, String birthday, Integer age, Integer courseId) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -59,11 +61,11 @@ public class StudentValidation {
         this.lastname = lastname;
     }
 
-    public LocalDate getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

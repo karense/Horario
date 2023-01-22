@@ -8,7 +8,9 @@ public class CourseValidation {
     private Integer id;
     @NotNull(message = "El campo [teacherId] es requerido.")
     private Integer teacherId;
-    @NotBlank
+    @Pattern(regexp = "^(([01][0-9]|2[0-3]):[0-5][0-9]-([01][0-9]|2[0-3]):[0-5][0-9])$", message = "El formato debe de ser HH:MM-HH:MM.")
+    @NotBlank(message = "El campo [schedule] es requerido.")
+    @Size(min = 11, max = 14, message = "El campo [schedule] no puede ser menor a 11 ni mayor a 14 caracteres.")
     private String schedule;
     @NotBlank
     @Size(max = 200)

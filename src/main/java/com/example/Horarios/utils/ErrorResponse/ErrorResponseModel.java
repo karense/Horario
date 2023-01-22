@@ -1,23 +1,22 @@
 package com.example.Horarios.utils.ErrorResponse;
 
-import java.time.LocalTime;
 import java.util.List;
 
-public class ErrorResponse {
+public class ErrorResponseModel {
     private int status;
 
     private String message;
 
     List<String> errors;
 
-    ErrorResponse(String message) {
+    ErrorResponseModel(String message) {
         this.message = message;
     }
 
-    public ErrorResponse() {
+    public ErrorResponseModel() {
     }
 
-    public ErrorResponse(int status, String message, List<String> errors) {
+    public ErrorResponseModel(int status, String message, List<String> errors) {
         this.status = status;
         this.message = message;
         this.errors = errors;
