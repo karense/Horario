@@ -10,4 +10,6 @@ public interface IGradeService {
 
     void save(GradeDTO gradeDTO);
     String update(GradeDTO gradeDTO);
+
+    void delete(int id);
 }

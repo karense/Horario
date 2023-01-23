@@ -54,4 +54,14 @@ public class GradeServiceImpl implements IGradeService {
         repository.save(gradeMapper.toGrade(gradeDTO));
         return "Updated";
     }
+
+    @Override
+    public void delete(int id) {
+        Optional<Grade> value = repository.findById(id);
+        if (value.isEmpty()){
+            throw new NoSuchElementException("No se encontró la nota con este id.");
+        }
+
+        repository.delete(value.get());
+    }
 }

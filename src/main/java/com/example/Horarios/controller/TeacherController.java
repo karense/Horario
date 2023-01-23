@@ -56,4 +56,10 @@ public class TeacherController {
 
         return new ResponseEntity<>(teacherServiceImpl.update(teacherValidationToTeacherDTO), HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int id){
+        teacherServiceImpl.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

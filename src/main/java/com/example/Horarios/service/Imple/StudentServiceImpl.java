@@ -61,6 +61,7 @@ public class StudentServiceImpl implements IStudentService {
     public void delete(int id) {
         Optional<Student> value = repository.findById( id);
         if (value.isEmpty()) throw new NoSuchElementException("No se econtró un estudiante con este id.");
-            repository.deleteById(id);
+
+        repository.deleteById(id);
     }
 }

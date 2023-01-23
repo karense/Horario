@@ -16,25 +16,25 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class RestExceptionHandle extends ResponseEntityExceptionHandler {
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponseModel> handleException(NoSuchElementException exc) {
+    private ResponseEntity<ErrorResponseModel> handleException(NoSuchElementException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, exc);
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponseModel> handleException(DuplicateKeyException exc) {
+    private ResponseEntity<ErrorResponseModel> handleException(DuplicateKeyException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, exc);
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponseModel> handleException(IllegalArgumentException exc) {
+    private ResponseEntity<ErrorResponseModel> handleException(InvalidDeleteException exc){
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, exc);
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponseModel> handleException(InvalidDataException exc) {
+    private ResponseEntity<ErrorResponseModel> handleException(InvalidDataException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         List<String> errors = exc.getResult().getFieldErrors().stream().map(FieldError::getDefaultMessage)
                 .collect(Collectors.toList());
@@ -42,13 +42,13 @@ public class RestExceptionHandle extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponseModel> handleException(MethodArgumentTypeMismatchException exc) {
+    private ResponseEntity<ErrorResponseModel> handleException(MethodArgumentTypeMismatchException exc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         return buildResponseEntity(httpStatus, new RuntimeException("Los argumentos no son validos."));
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ErrorResponseModel> handleException(Exception exc) {
+    private ResponseEntity<ErrorResponseModel> handleException(Exception exc) {
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         return buildResponseEntity(httpStatus, new RuntimeException("Se ha presentado un problema."));
     }

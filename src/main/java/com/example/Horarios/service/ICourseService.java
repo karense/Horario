@@ -10,4 +10,6 @@ public interface ICourseService {
 
     void save(CourseDTO courseDTO);
     String update(CourseDTO courseDTO);
+
+    void delete(int id);
 }

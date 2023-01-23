@@ -50,4 +50,10 @@ public class CourseController {
         CourseDTO convertToCourseDTO = courseMapper.validationToDto(courseValidation);
         return new ResponseEntity<>(iCourseService.update(convertToCourseDTO),HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int id){
+        iCourseService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

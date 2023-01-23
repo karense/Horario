@@ -4,6 +4,7 @@ import com.example.Horarios.dto.TeacherDTO;
 import com.example.Horarios.repository.ITeacherRepository;
 import com.example.Horarios.repository.entity.Teacher;
 import com.example.Horarios.service.ITeacherService;
+import com.example.Horarios.utils.ErrorResponse.InvalidDeleteException;
 import com.example.Horarios.utils.mapper.TeacherMapper;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -63,5 +64,17 @@ public class TeacherServiceImpl implements ITeacherService {
         }
         repository.save(teacherMapper.toTeacher(teacherDTO));
         return "Update";
+    }
+
+    @Override
+    public void delete(int id) {
+        Optional<Teacher> value = repository.findById(id);
+        if(value.isEmpty()){
+            throw new NoSuchElementException("No se econtró un profesor con esta cédula");
+        } else if (value.get().getCourse().size() > 0) {
+            throw new InvalidDeleteException("El profesor con id: "+id+" no se puede eliminar porque tiene cursos asignados.");
+        }
+
+        repository.delete(value.get());
     }
 }

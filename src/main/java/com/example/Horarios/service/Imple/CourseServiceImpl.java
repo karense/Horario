@@ -4,6 +4,7 @@ import com.example.Horarios.dto.CourseDTO;
 import com.example.Horarios.repository.ICourseRepository;
 import com.example.Horarios.repository.entity.Course;
 import com.example.Horarios.service.ICourseService;
+import com.example.Horarios.utils.ErrorResponse.InvalidDeleteException;
 import com.example.Horarios.utils.mapper.CourseMapper;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,18 @@ public class CourseServiceImpl implements ICourseService {
         }
         repository.save(courseMapper.toCourse(courseDTO));
         return "Update";
+    }
+
+    @Override
+    public void delete(int id) {
+        Optional<Course> value = repository.findById(id);
+        if(value.isEmpty()){
+            throw new NoSuchElementException("No se econtró un curso con este id.");
+        } else if (value.get().getStudentList().size() > 0) {
+            throw new InvalidDeleteException("El curso con id: "+id+" no se puede eliminar ya que tiene estudiantes asignados.");
+        }
+
+        repository.delete(value.get());
+
     }
 }

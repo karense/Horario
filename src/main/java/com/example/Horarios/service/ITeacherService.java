@@ -13,4 +13,6 @@ public interface ITeacherService {
 
     TeacherDTO save(TeacherDTO teacherDTO) throws DuplicateKeyException;
     String update(TeacherDTO teacherDTO);
+
+    void delete(int id);
 }

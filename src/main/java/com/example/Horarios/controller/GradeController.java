@@ -50,5 +50,10 @@ public class GradeController {
         return new ResponseEntity<>(gradeService.update(gradeMapper.validationToGradeDTO(gradeValidation)),HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int id){
+        gradeService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
